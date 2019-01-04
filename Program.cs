@@ -6,15 +6,15 @@ using static Rights;
 
 internal static class Program
 {
-    private static void Main(string[] args)
+    private static int Main(string[] args)
     {
         if (args.Length != 1)
         {
-            Console.WriteLine("Usage: iQueCMD.exe file.cmd");
-            return;
+            Console.Error.WriteLine("Usage: iQueCMD.exe file.cmd");
+            return 1;
         }
 
-        string titleName = null;
+        var titleName = string.Empty;
 
         using (var strm  = File.OpenRead(args[0]))
         using (var rdr   = new BinaryReader(strm))
@@ -90,7 +90,7 @@ internal static class Program
             for (int i = 0; i < tistm.Length; i += sizeof(ushort))
                 tiwrt.Write(_5551to8888(tirdr.ReadBU16()));
 
-            titleName = rdr.ReadGB2312Z();
+            titleName = rdr.ReadGB2312Z().TrimEnd();
 
             DualPrintDesc("Title name: {0}", titleName);
 
@@ -132,6 +132,8 @@ internal static class Program
 
             if (strm.Length > 0x29AC)
                 File.WriteAllBytes($"{titleName}/ticket.dat", rdr.ReadBytes((int)(strm.Length - strm.Position)));
+
+            return 0;
         }
     }
 }
