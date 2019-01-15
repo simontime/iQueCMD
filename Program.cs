@@ -88,7 +88,7 @@ internal static class Program
                 thwrt.Write(_5551to8888(thrdr.ReadBU16()));
 
             for (int i = 0; i < tistm.Length; i += sizeof(ushort))
-                tiwrt.Write(_5551to8888(tirdr.ReadBU16()));
+                tiwrt.Write(Mono5551to8888(tirdr.ReadBU16()));
 
             titleName = rdr.ReadGB2312Z().TrimEnd();
 

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
@@ -11,6 +12,12 @@ public static class Image
         (input & 0x7c0)    << 5  |
         (input & 0xf800)   << 8
     );
+
+    public static uint Mono5551to8888(ushort input)
+    {
+        int grey = input >> 11, alpha = (byte)input == 0 ? 0 : 1;
+        return _5551to8888((ushort)(grey << 11 | grey << 6 | grey << 1 | alpha));
+    }
 
     public static void SaveImage(byte[] buf, string baseDir, bool isThumb)
     {
