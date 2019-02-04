@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -13,10 +13,11 @@ public static class Image
         (input & 0xf800)   << 8
     );
 
-    public static uint Mono5551to8888(ushort input)
+    public static uint IA8To8888(ushort input)
     {
-        int grey = input >> 11, alpha = (byte)input == 0 ? 0 : 1;
-        return _5551to8888((ushort)(grey << 11 | grey << 6 | grey << 1 | alpha));
+        var alpha = input & 0xff;
+        var grey = input >> 8;
+        return (uint)(grey | (grey << 8) | (grey << 16) | (alpha << 24));
     }
 
     public static void SaveImage(byte[] buf, string baseDir, bool isThumb)
